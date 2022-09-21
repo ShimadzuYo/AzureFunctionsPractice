@@ -7,8 +7,14 @@ using Microsoft.Extensions.Options;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
     .Build();
+var queueConfiguration = configuration.GetSection(QueueConfiguration.ConfigSectionName).Get<QueueConfiguration>();
+Console.WriteLine(queueConfiguration.ConnectionString);
+Console.WriteLine(queueConfiguration.QueueName);
+
+var hui = configuration.GetSection("SuperConfiguration:People").Get<Person>();
+Console.WriteLine("Result = {0},{1},{2}",hui.Id,hui.IsDolboeb, hui.Name);
 
 // var hui = configuration.GetSection("Section1").GetSection("Section2").Get<HuiConfiguration>();
 // Console.WriteLine(hui.Name + hui.Age);
@@ -20,18 +26,27 @@ var configuration = new ConfigurationBuilder()
 // {
 //     Console.WriteLine(a);
 // }
-
-var hui5 = configuration.GetSection("SuperConfiguration:People").Get<List<Person>>();
-foreach (Person person in hui5)
-{
-    Console.WriteLine($"{person.Id} {person.Name} {person.IsDolboeb} ");
-}
-
-var myDick = new Dictionary<Person, AdditonalInfo>();
-
-
-
-
+//
+// var hui5 = configuration.GetSection("SuperConfiguration:People").Get<List<Person>>();
+// foreach (Person person in hui5)
+// {
+//     Console.WriteLine($"{person.Id} {person.Name} {person.IsDolboeb} ");
+// }
+//
+// var hui6 = configuration.GetSection("SuperConfiguration:People").Get<List<Person>>();
+//
+// foreach (Person person in hui6)
+// {
+//     var info = person.AdditionalInfo;
+//     Console.WriteLine($"{person.Id} {person.Name} {person.IsDolboeb} ");
+//     foreach (var key in info)
+//     {
+//         Console.WriteLine("Key = {0} Value = {1}", key.Key, key.Value );
+//     }
+// }
+//
+//
+//
 
 
 
