@@ -6,3 +6,4 @@ public class Person
     public bool IsDolboeb { get; set; }
     public string Name { get; set; }
 }
+
