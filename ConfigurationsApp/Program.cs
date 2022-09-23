@@ -1,29 +1,25 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.ComponentModel.Design;
-using System.Configuration;
 using ConfigurationsApp;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using ConfigurationManager = System.Configuration.ConfigurationManager;
-
+using Microsoft.Extensions.DependencyInjection;
 
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 
-var grayLog = configuration.GetSection("GrayLog").Get<jobOptionsGrayLog>();
-var sqlConnectionString = configuration.GetSection("SqlServerConfiguration").Get<jobOptionsSqlServerOptions>();
+var services = new ServiceCollection();
+services.AddOptions();
 
-Console.WriteLine("Info: {0} {1} {2} {3} {4}", grayLog.Enabled, grayLog.Facility, grayLog.Port, grayLog.Server, grayLog.LogLevel);
-
-
-
-
-
-
-
+services.Configure<GrayLogOptions>(configuration.GetSection("Graylog"));
+services.Configure<SqlServerOptions>(configuration.GetSection("SqlServerConfiguration"));
+services.Configure<AzureOptions>(configuration.GetSection("AzureConfiguration"));
+services.Configure<ProviderApiOptions>(configuration.GetSection("ProviderApiConfiguration"));
+services.Configure<ResiliencePolicyOptions>(configuration.GetSection("ResiliencePolicy"));
+services.AddScoped<SomeService>();
 
 
 
-
+var buildServiceProvider = services.BuildServiceProvider();
+var someService = buildServiceProvider.GetService<SomeService>();
+someService.PrintConfigurations();

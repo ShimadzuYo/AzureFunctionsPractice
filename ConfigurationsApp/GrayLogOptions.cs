@@ -2,7 +2,7 @@
 
 namespace ConfigurationsApp;
 
-public class jobOptionsGrayLog
+public class GrayLogOptions
 {
     public bool Enabled { get; set; }
     public string Server { get; set; }

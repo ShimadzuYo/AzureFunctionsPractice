@@ -1,6 +1,6 @@
 ﻿namespace ConfigurationsApp;
 
-public class jobOptionsSqlServerOptions
+public class SqlServerOptions
 {
     public string ConnectionString { get; set; }
 }
