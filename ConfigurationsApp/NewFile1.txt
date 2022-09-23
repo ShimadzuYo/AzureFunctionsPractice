@@ -1,0 +1,13 @@
+3 Sdavlen True
+1 Shukhrat False
+2 Arthur Kim True
+3 Sdavlen True
+Key = eblan Value = True
+Key = huiSize Value = 0
+1 Shukhrat False
+Key = isSexist Value = True
+Key = lovesHistory Value = True
+2 Arthur Kim True
+Key = brothersName Value = David
+Key = debil Value = True
+
