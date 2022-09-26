@@ -10,16 +10,24 @@ public class SomeService
     private readonly SqlServerOptions _sqlServerOptions;
     private readonly AzureOptions _azureOptions;
     private readonly ProviderApiOptions _providerApiOptions;
-    
+    private readonly ServiceConfigurationOptions _serviceConfigurationOptions;
+    private readonly ResiliencePolicyOptions _resiliencePolicyOptions;
+    private readonly BoxComOptions _boxComOptions;
 
-    public SomeService(IOptions<GrayLogOptions> grayLogOptions, IOptions<SqlServerOptions> sqlOptions, IOptions<AzureOptions> azureOptions, IOptions<ProviderApiOptions> providerApiOptions)
+
+    public SomeService(IOptions<GrayLogOptions> grayLogOptions, IOptions<SqlServerOptions> sqlOptions,
+        IOptions<AzureOptions> azureOptions, IOptions<ProviderApiOptions> providerApiOptions,
+        IOptions<ServiceConfigurationOptions> serviceConfigurationOptions,
+        IOptions<ResiliencePolicyOptions> resiliencePolicyOptions,
+        IOptions<BoxComOptions> boxComOptions)
     {
+        _serviceConfigurationOptions = serviceConfigurationOptions.Value;
+        _resiliencePolicyOptions = resiliencePolicyOptions.Value;
         _providerApiOptions = providerApiOptions.Value;
         _grayLogOptions = grayLogOptions.Value;
         _sqlServerOptions = sqlOptions.Value;
         _azureOptions = azureOptions.Value;
-
-
+        _boxComOptions = boxComOptions.Value;
     }
 
     public void PrintConfigurations()
@@ -43,8 +51,15 @@ public class SomeService
         Console.WriteLine($"{_providerApiOptions.Token}");
         Console.WriteLine($"{_providerApiOptions.BaseUrl}");
         Console.WriteLine("Resilience policy options:");
-        
-
-
+        Console.WriteLine($"{_resiliencePolicyOptions.RequestTimeoutSeconds}");
+        Console.WriteLine($"{_resiliencePolicyOptions.MedianFirstRetryDelaySeconds}");
+        Console.WriteLine($"{_resiliencePolicyOptions.TransientApiErrorRetryCount}");
+        Console.WriteLine("Providers with multiple folders:");
+        if (_serviceConfigurationOptions.ProvidersWithSpecificFolders != null)
+            foreach (var pair in _serviceConfigurationOptions.ProvidersWithSpecificFolders)
+            {
+                Console.WriteLine(pair.Key);
+                Console.WriteLine(pair.Value);
+            }
     }
 }

@@ -23,15 +23,18 @@ public class BackGroundService : BackgroundService
         _queueClient.CreateIfNotExists();
         
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _timer = new PeriodicTimer(new TimeSpan(60000));
+        _timer = new PeriodicTimer(TimeSpan.FromSeconds(60));
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+_logger.LogInformation("Starting background service...");
         while (await _timer.WaitForNextTickAsync(stoppingToken))
         {
+            _logger.LogInformation("Putting message into the {queueName}", _queueClient.Name);
             var messageSerialzied = JsonSerializer.Serialize(_message);
             await _queueClient.SendMessageAsync(messageSerialzied, stoppingToken);
+            _logger.LogInformation("Successfully put message into the {queueName}", _queueClient.Name);
         }
     }
 

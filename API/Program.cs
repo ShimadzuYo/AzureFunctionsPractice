@@ -16,14 +16,14 @@ services.AddSwaggerGen();
 services.AddOptions();
 services.AddHostedService<BackGroundService>();
 
+
 services.Configure<QueueConfiguration>(configuration.GetSection("QueueConfiguration"));
 services.AddAzureClients(azureClientFactoryBuilder =>
 {
     var queueConfiguration = configuration.GetSection("QueueConfiguration").Get<QueueConfiguration>();
-
     azureClientFactoryBuilder.UseCredential(new DefaultAzureCredential());
     azureClientFactoryBuilder
-        .AddQueueServiceClient(builder.Configuration.GetSection(queueConfiguration.StorageConnectionString))
+        .AddQueueServiceClient(queueConfiguration.StorageConnectionString)
         .ConfigureOptions(c => c.MessageEncoding = QueueMessageEncoding.Base64);
 });
 

@@ -16,6 +16,7 @@ services.Configure<SqlServerOptions>(configuration.GetSection("SqlServerConfigur
 services.Configure<AzureOptions>(configuration.GetSection("AzureConfiguration"));
 services.Configure<ProviderApiOptions>(configuration.GetSection("ProviderApiConfiguration"));
 services.Configure<ResiliencePolicyOptions>(configuration.GetSection("ResiliencePolicy"));
+services.Configure<ServiceConfigurationOptions>(configuration.GetSection("ServiceConfiguration"));
 services.AddScoped<SomeService>();
 
 
