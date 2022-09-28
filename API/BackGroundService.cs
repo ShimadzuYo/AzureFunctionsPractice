@@ -28,7 +28,7 @@ public class BackGroundService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-_logger.LogInformation("Starting background service...");
+        _logger.LogInformation("Starting background service...");
         while (await _timer.WaitForNextTickAsync(stoppingToken))
         {
             _logger.LogInformation("Putting message into the {queueName}", _queueClient.Name);

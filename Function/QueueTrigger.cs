@@ -12,13 +12,12 @@ namespace Function;
 public class QueueTrigger
 {
     private readonly ILogger<QueueTrigger> _logger;
-    private readonly HttpClient _httpClient;
+    private readonly ProviderApi _providerApi;
 
-    public QueueTrigger(ILogger<QueueTrigger> logger,
-        HttpClient httpClient)
+    public QueueTrigger(ILogger<QueueTrigger> logger, ProviderApi providerApi)
     {
         _logger = logger;
-        _httpClient = httpClient;
+        _providerApi = providerApi;
     }
 
     [FunctionName("QueueTrigger")]
@@ -27,6 +26,8 @@ public class QueueTrigger
         var message = JsonSerializer.Deserialize<Message>(myQueueItem);
         
         log.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
-        
+        var job = await _providerApi.GetJob(message.ProviderId, message.JobId);
+        Console.WriteLine(job.JobId, job.ProviderId);
+
     }
 }
